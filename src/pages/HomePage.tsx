@@ -54,7 +54,7 @@ export function HomePage({ parkingSpots, vehicles, onMakeReservation, onNavigate
         <BgRemovedImage
           src="/lovable-uploads/e9f2a366-3ff8-48f6-b007-8e124ddf7234.png"
           alt="VAGGO Logo"
-          className="h-12 w-auto mx-auto mb-8"
+          className="h-20 w-auto mx-auto mb-10"
         />
         
         {/* Search Bar */}
