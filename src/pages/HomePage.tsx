@@ -50,7 +50,11 @@ export function HomePage({ parkingSpots, vehicles, onMakeReservation, onNavigate
     <div className="min-h-screen bg-[#081C2D] pb-20 animate-fade-in">
       {/* Header */}
       <div className="text-center py-8 px-4">
-        <h1 className="text-4xl font-bold text-white mb-8">VAGGO</h1>
+        <img
+          src="/lovable-uploads/e9f2a366-3ff8-48f6-b007-8e124ddf7234.png"
+          alt="VAGGO Logo"
+          className="h-12 w-auto mx-auto mb-8"
+        />
         
         {/* Search Bar */}
         <div className="relative max-w-md mx-auto mb-6">
