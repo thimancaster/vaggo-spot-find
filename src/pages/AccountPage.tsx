@@ -11,7 +11,7 @@ interface AccountPageProps {
 
 export function AccountPage({ user, onUpgradeToPremium, onNavigateToPlans }: AccountPageProps) {
   return (
-    <div className="min-h-screen bg-[#081C2D] pb-20">
+    <div className="min-h-screen bg-[#081C2D] pb-20 animate-fade-in">
       {/* Header */}
       <div className="bg-gray-800 border-b border-gray-700 p-4">
         <h1 className="text-xl font-bold text-white">Minha Conta</h1>
@@ -69,7 +69,7 @@ export function AccountPage({ user, onUpgradeToPremium, onNavigateToPlans }: Acc
               
               <Button
                 onClick={onNavigateToPlans}
-                className="w-full bg-[#7CFC00] hover:bg-[#6BD300] text-[#081C2D] font-bold h-12 rounded-xl"
+                className="w-full bg-gradient-to-r from-[#7CFC00] to-lime-400 text-[#081C2D] font-bold h-12 rounded-xl transition-transform duration-200 hover:scale-105"
               >
                 <Crown className="w-5 h-5 mr-2" />
                 Upgrade para Premium

@@ -12,9 +12,9 @@ interface VehicleCardProps {
 export function VehicleCard({ vehicle, onRemove, onSelect, selected }: VehicleCardProps) {
   return (
     <div 
-      className={`bg-gray-800 rounded-lg p-4 border transition-colors ${
+      className={`bg-gray-800 rounded-lg p-4 border transition-all duration-200 ${
         selected ? 'border-[#7CFC00] bg-gray-700' : 'border-gray-600'
-      } ${onSelect ? 'cursor-pointer hover:border-gray-500' : ''}`}
+      } ${onSelect ? 'cursor-pointer hover:border-gray-500 hover:scale-[1.03]' : ''}`}
       onClick={() => onSelect?.(vehicle)}
     >
       <div className="flex items-center justify-between">

@@ -47,7 +47,7 @@ export function HomePage({ parkingSpots, vehicles, onMakeReservation, onNavigate
   };
 
   return (
-    <div className="min-h-screen bg-[#081C2D] pb-20">
+    <div className="min-h-screen bg-[#081C2D] pb-20 animate-fade-in">
       {/* Header */}
       <div className="text-center py-8 px-4">
         <h1 className="text-4xl font-bold text-white mb-8">VAGGO</h1>
@@ -94,7 +94,7 @@ export function HomePage({ parkingSpots, vehicles, onMakeReservation, onNavigate
             
             <Button 
               onClick={handleReservation}
-              className="w-full bg-[#7CFC00] hover:bg-[#6BD300] text-[#081C2D] font-bold text-lg h-12 rounded-xl"
+              className="w-full bg-gradient-to-r from-[#7CFC00] to-lime-400 text-[#081C2D] font-bold text-lg h-12 rounded-xl transition-transform duration-200 hover:scale-105"
             >
               Reservar vaga
             </Button>
@@ -106,7 +106,7 @@ export function HomePage({ parkingSpots, vehicles, onMakeReservation, onNavigate
       <div className="px-4">
         <button
           onClick={onNavigateToVehicles}
-          className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-xl p-4 transition-colors"
+          className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-xl p-4 transition-all duration-200 hover:scale-[1.02]"
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
