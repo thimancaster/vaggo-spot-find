@@ -6,6 +6,7 @@ import { ParkingSpot, Vehicle } from '../types';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { useToast } from '../hooks/use-toast';
+import { BgRemovedImage } from '../components/BgRemovedImage';
 
 interface HomePageProps {
   parkingSpots: ParkingSpot[];
@@ -50,7 +51,7 @@ export function HomePage({ parkingSpots, vehicles, onMakeReservation, onNavigate
     <div className="min-h-screen bg-[#081C2D] pb-20 animate-fade-in">
       {/* Header */}
       <div className="text-center py-8 px-4">
-        <img
+        <BgRemovedImage
           src="/lovable-uploads/e9f2a366-3ff8-48f6-b007-8e124ddf7234.png"
           alt="VAGGO Logo"
           className="h-12 w-auto mx-auto mb-8"
