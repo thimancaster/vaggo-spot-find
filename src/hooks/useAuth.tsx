@@ -54,7 +54,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
               if (error) {
                 console.error('Error fetching profile:', error);
               } else {
-                setProfile(profileData);
+                // Safely cast the plan to the correct type
+                const safeProfile: Profile = {
+                  ...profileData,
+                  plan: (profileData.plan === 'premium' ? 'premium' : 'free') as 'free' | 'premium'
+                };
+                setProfile(safeProfile);
               }
             } catch (err) {
               console.error('Profile fetch error:', err);
