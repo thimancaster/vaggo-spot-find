@@ -1,15 +1,30 @@
 
-import { Crown, User, Mail, MapPin, CreditCard } from 'lucide-react';
-import { User as UserType } from '../types';
+import { Crown, User, Mail, MapPin, CreditCard, LogOut } from 'lucide-react';
 import { Button } from '../components/ui/button';
+import { useAuth } from '../hooks/useAuth';
 
 interface AccountPageProps {
-  user: UserType;
+  user: any;
   onUpgradeToPremium: () => void;
   onNavigateToPlans: () => void;
 }
 
-export function AccountPage({ user, onUpgradeToPremium, onNavigateToPlans }: AccountPageProps) {
+export function AccountPage({ onUpgradeToPremium, onNavigateToPlans }: AccountPageProps) {
+  const { profile, signOut, updateProfile } = useAuth();
+
+  if (!profile) {
+    return (
+      <div className="min-h-screen bg-[#081C2D] pb-20 flex items-center justify-center">
+        <div className="text-white">Carregando perfil...</div>
+      </div>
+    );
+  }
+
+  const handleUpgradeToPremium = async () => {
+    await updateProfile({ plan: 'premium' });
+    onUpgradeToPremium();
+  };
+
   return (
     <div className="min-h-screen bg-[#081C2D] pb-20 animate-fade-in">
       {/* Header */}
@@ -25,14 +40,14 @@ export function AccountPage({ user, onUpgradeToPremium, onNavigateToPlans }: Acc
               <User className="text-[#081C2D] w-8 h-8" />
             </div>
             <div>
-              <h2 className="text-white font-bold text-lg">{user.name}</h2>
+              <h2 className="text-white font-bold text-lg">{profile.name}</h2>
               <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                user.plan === 'premium' 
+                profile.plan === 'premium' 
                   ? 'bg-[#7CFC00] text-[#081C2D]' 
                   : 'bg-gray-700 text-gray-300'
               }`}>
-                {user.plan === 'premium' && <Crown className="w-4 h-4 mr-1" />}
-                {user.plan === 'premium' ? 'Premium' : 'Gratuito'}
+                {profile.plan === 'premium' && <Crown className="w-4 h-4 mr-1" />}
+                {profile.plan === 'premium' ? 'Premium' : 'Gratuito'}
               </div>
             </div>
           </div>
@@ -40,11 +55,11 @@ export function AccountPage({ user, onUpgradeToPremium, onNavigateToPlans }: Acc
           <div className="space-y-4">
             <div className="flex items-center space-x-3">
               <Mail className="text-gray-400 w-5 h-5" />
-              <span className="text-white">{user.email}</span>
+              <span className="text-white">{profile.email}</span>
             </div>
             <div className="flex items-center space-x-3">
               <MapPin className="text-gray-400 w-5 h-5" />
-              <span className="text-white">{user.city}</span>
+              <span className="text-white">{profile.city}</span>
             </div>
           </div>
         </div>
@@ -56,7 +71,7 @@ export function AccountPage({ user, onUpgradeToPremium, onNavigateToPlans }: Acc
             Plano Atual
           </h3>
           
-          {user.plan === 'free' ? (
+          {profile.plan === 'free' ? (
             <div>
               <div className="mb-4">
                 <h4 className="text-white font-medium mb-2">Plano Gratuito</h4>
@@ -113,9 +128,14 @@ export function AccountPage({ user, onUpgradeToPremium, onNavigateToPlans }: Acc
             <span className="text-white">Termos de uso</span>
           </button>
           
-          <button className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-xl p-4 text-left transition-colors">
-            <span className="text-red-400">Sair da conta</span>
-          </button>
+          <Button
+            onClick={signOut}
+            variant="outline"
+            className="w-full bg-gray-800 hover:bg-gray-700 border border-gray-600 rounded-xl p-4 text-red-400 hover:text-red-300"
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Sair da conta
+          </Button>
         </div>
       </div>
     </div>
