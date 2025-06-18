@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { MapPin, Clock, Car, StopCircle } from 'lucide-react';
 import { Reservation } from '../hooks/useReservations';
 import { Button } from './ui/button';
