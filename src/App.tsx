@@ -17,7 +17,7 @@ import { PlansPage } from './pages/PlansPage';
 const queryClient = new QueryClient();
 
 function AppContent() {
-  const { user, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('home');
   const [currentView, setCurrentView] = useState('home');
   const [showAuth, setShowAuth] = useState(false);
@@ -80,7 +80,7 @@ function AppContent() {
       case 'account':
         return (
           <AccountPage
-            user={user}
+            user={profile}
             onUpgradeToPremium={() => {}}
             onNavigateToPlans={handleNavigateToPlans}
           />
@@ -90,7 +90,7 @@ function AppContent() {
           <PlansPage
             onBack={handleBackToAccount}
             onUpgradeToPremium={() => {}}
-            currentPlan={user?.plan || 'free'}
+            currentPlan={profile?.plan || 'free'}
           />
         );
       default:

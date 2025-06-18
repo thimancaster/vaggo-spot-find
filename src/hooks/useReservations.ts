@@ -23,6 +23,14 @@ export interface Reservation {
   parking_spot?: ParkingSpot;
 }
 
+// Helper function to safely cast status
+const safeStatus = (status: string): 'active' | 'completed' | 'cancelled' => {
+  if (status === 'active' || status === 'completed' || status === 'cancelled') {
+    return status;
+  }
+  return 'active'; // default fallback
+};
+
 export function useReservations() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,10 +59,16 @@ export function useReservations() {
         console.error('Error fetching reservations:', error);
         toast.error('Erro ao carregar reservas');
       } else {
-        setReservations(data || []);
+        // Safely cast the data with proper status types
+        const safeReservations: Reservation[] = (data || []).map(item => ({
+          ...item,
+          status: safeStatus(item.status || 'active')
+        }));
+        
+        setReservations(safeReservations);
         
         // Find current active reservation
-        const activeReservation = data?.find(r => r.status === 'active');
+        const activeReservation = safeReservations.find(r => r.status === 'active');
         setCurrentReservation(activeReservation || null);
       }
     } catch (err) {
@@ -101,10 +115,16 @@ export function useReservations() {
         return null;
       }
 
-      setReservations(prev => [data, ...prev]);
-      setCurrentReservation(data);
+      // Safely cast the returned data
+      const safeReservation: Reservation = {
+        ...data,
+        status: safeStatus(data.status || 'active')
+      };
+
+      setReservations(prev => [safeReservation, ...prev]);
+      setCurrentReservation(safeReservation);
       toast.success('Reserva realizada com sucesso!');
-      return data;
+      return safeReservation;
     } catch (err) {
       console.error('Make reservation error:', err);
       toast.error('Erro ao fazer reserva');
