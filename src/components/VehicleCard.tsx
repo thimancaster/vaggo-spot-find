@@ -1,6 +1,6 @@
 
 import { Trash2 } from 'lucide-react';
-import { Vehicle } from '../types';
+import { Vehicle } from '../hooks/useVehicles';
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -10,6 +10,10 @@ interface VehicleCardProps {
 }
 
 export function VehicleCard({ vehicle, onRemove, onSelect, selected }: VehicleCardProps) {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('pt-BR');
+  };
+
   return (
     <div 
       className={`bg-gray-800 rounded-lg p-4 border transition-all duration-200 ${
@@ -25,7 +29,7 @@ export function VehicleCard({ vehicle, onRemove, onSelect, selected }: VehicleCa
           <div>
             <p className="text-white font-semibold">{vehicle.plate}</p>
             <p className="text-gray-400 text-sm">
-              Adicionado em {vehicle.addedAt.toLocaleDateString()}
+              Adicionado em {formatDate(vehicle.created_at)}
             </p>
           </div>
         </div>

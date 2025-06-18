@@ -2,25 +2,28 @@
 import { useState } from 'react';
 import { Search, MapPin, Car } from 'lucide-react';
 import { MapView } from '../components/MapView';
-import { ParkingSpot, Vehicle } from '../types';
+import { useParkingSpots } from '../hooks/useParkingSpots';
+import { useVehicles } from '../hooks/useVehicles';
+import { useReservations } from '../hooks/useReservations';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { useToast } from '../hooks/use-toast';
 import { BgRemovedImage } from '../components/BgRemovedImage';
 
 interface HomePageProps {
-  parkingSpots: ParkingSpot[];
-  vehicles: Vehicle[];
-  onMakeReservation: (spot: ParkingSpot, vehiclePlate: string) => void;
   onNavigateToVehicles: () => void;
 }
 
-export function HomePage({ parkingSpots, vehicles, onMakeReservation, onNavigateToVehicles }: HomePageProps) {
-  const [selectedSpot, setSelectedSpot] = useState<ParkingSpot | null>(null);
+export function HomePage({ onNavigateToVehicles }: HomePageProps) {
+  const [selectedSpot, setSelectedSpot] = useState<any>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const { toast } = useToast();
+  
+  const { parkingSpots, loading: spotsLoading } = useParkingSpots();
+  const { vehicles, loading: vehiclesLoading } = useVehicles();
+  const { makeReservation } = useReservations();
 
-  const handleReservation = () => {
+  const handleReservation = async () => {
     if (!selectedSpot) {
       toast({
         title: "Selecione uma vaga",
@@ -40,12 +43,16 @@ export function HomePage({ parkingSpots, vehicles, onMakeReservation, onNavigate
     }
 
     // Use the first vehicle for demo purposes
-    onMakeReservation(selectedSpot, vehicles[0].plate);
-    toast({
-      title: "Reserva confirmada!",
-      description: `Vaga ${selectedSpot.name} reservada por 1 hora.`,
-    });
+    await makeReservation(selectedSpot, vehicles[0].id);
   };
+
+  if (spotsLoading || vehiclesLoading) {
+    return (
+      <div className="min-h-screen bg-[#081C2D] flex items-center justify-center">
+        <div className="text-white text-lg">Carregando...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#081C2D] pb-20 animate-fade-in">

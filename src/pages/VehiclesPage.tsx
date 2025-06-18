@@ -1,22 +1,21 @@
+
 import { useState } from 'react';
 import { Plus, ArrowLeft } from 'lucide-react';
 import { VehicleCard } from '../components/VehicleCard';
-import { Vehicle } from '../types';
+import { useVehicles } from '../hooks/useVehicles';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { useToast } from '../hooks/use-toast';
 
 interface VehiclesPageProps {
-  vehicles: Vehicle[];
-  onAddVehicle: (plate: string) => void;
-  onRemoveVehicle: (id: string) => void;
   onBack: () => void;
 }
 
-export function VehiclesPage({ vehicles, onAddVehicle, onRemoveVehicle, onBack }: VehiclesPageProps) {
+export function VehiclesPage({ onBack }: VehiclesPageProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [newPlate, setNewPlate] = useState('');
   const { toast } = useToast();
+  const { vehicles, loading, addVehicle, removeVehicle } = useVehicles();
 
   const validatePlate = (plate: string) => {
     // Brazilian license plate format (ABC1234 or ABC1D23)
@@ -27,7 +26,7 @@ export function VehiclesPage({ vehicles, onAddVehicle, onRemoveVehicle, onBack }
     return oldFormat.test(cleanPlate) || newFormat.test(cleanPlate);
   };
 
-  const handleAddVehicle = () => {
+  const handleAddVehicle = async () => {
     const cleanPlate = newPlate.replace(/[^A-Z0-9]/g, '').toUpperCase();
     
     if (!validatePlate(cleanPlate)) {
@@ -48,13 +47,9 @@ export function VehiclesPage({ vehicles, onAddVehicle, onRemoveVehicle, onBack }
       return;
     }
 
-    onAddVehicle(cleanPlate);
+    await addVehicle(cleanPlate);
     setNewPlate('');
     setIsAdding(false);
-    toast({
-      title: "Veículo adicionado!",
-      description: `Veículo ${cleanPlate} foi adicionado com sucesso.`,
-    });
   };
 
   const formatPlate = (plate: string) => {
@@ -65,6 +60,14 @@ export function VehiclesPage({ vehicles, onAddVehicle, onRemoveVehicle, onBack }
     }
     return clean.slice(0, 3) + '-' + clean.slice(3, 7);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-[#081C2D] flex items-center justify-center">
+        <div className="text-white text-lg">Carregando veículos...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#081C2D] pb-20 animate-fade-in">
@@ -144,7 +147,7 @@ export function VehiclesPage({ vehicles, onAddVehicle, onRemoveVehicle, onBack }
               <VehicleCard
                 key={vehicle.id}
                 vehicle={vehicle}
-                onRemove={onRemoveVehicle}
+                onRemove={removeVehicle}
               />
             ))}
           </div>

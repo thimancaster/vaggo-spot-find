@@ -13,7 +13,6 @@ import { HistoryPage } from './pages/HistoryPage';
 import { SupportPage } from './pages/SupportPage';
 import { AccountPage } from './pages/AccountPage';
 import { PlansPage } from './pages/PlansPage';
-import { useVaggo } from './hooks/useVaggo';
 
 const queryClient = new QueryClient();
 
@@ -22,16 +21,6 @@ function AppContent() {
   const [activeTab, setActiveTab] = useState('home');
   const [currentView, setCurrentView] = useState('home');
   const [showAuth, setShowAuth] = useState(false);
-  
-  const {
-    vehicles,
-    reservations,
-    mockParkingSpots,
-    addVehicle,
-    removeVehicle,
-    makeReservation,
-    upgradeToPremium
-  } = useVaggo();
 
   // Show loading screen while checking auth status
   if (loading) {
@@ -75,30 +64,24 @@ function AppContent() {
       case 'home':
         return (
           <HomePage
-            parkingSpots={mockParkingSpots}
-            vehicles={vehicles}
-            onMakeReservation={makeReservation}
             onNavigateToVehicles={handleNavigateToVehicles}
           />
         );
       case 'vehicles':
         return (
           <VehiclesPage
-            vehicles={vehicles}
-            onAddVehicle={addVehicle}
-            onRemoveVehicle={removeVehicle}
             onBack={handleBackToHome}
           />
         );
       case 'history':
-        return <HistoryPage reservations={reservations} />;
+        return <HistoryPage />;
       case 'support':
         return <SupportPage />;
       case 'account':
         return (
           <AccountPage
             user={user}
-            onUpgradeToPremium={upgradeToPremium}
+            onUpgradeToPremium={() => {}}
             onNavigateToPlans={handleNavigateToPlans}
           />
         );
@@ -106,16 +89,13 @@ function AppContent() {
         return (
           <PlansPage
             onBack={handleBackToAccount}
-            onUpgradeToPremium={upgradeToPremium}
-            currentPlan="free"
+            onUpgradeToPremium={() => {}}
+            currentPlan={user?.plan || 'free'}
           />
         );
       default:
         return (
           <HomePage
-            parkingSpots={mockParkingSpots}
-            vehicles={vehicles}
-            onMakeReservation={makeReservation}
             onNavigateToVehicles={handleNavigateToVehicles}
           />
         );

@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      parking_spots: {
+        Row: {
+          available: boolean
+          created_at: string
+          id: string
+          lat: number
+          lng: number
+          name: string
+          price: number
+          updated_at: string
+        }
+        Insert: {
+          available?: boolean
+          created_at?: string
+          id?: string
+          lat: number
+          lng: number
+          name: string
+          price: number
+          updated_at?: string
+        }
+        Update: {
+          available?: boolean
+          created_at?: string
+          id?: string
+          lat?: number
+          lng?: number
+          name?: string
+          price?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           city: string | null
@@ -36,6 +69,87 @@ export type Database = {
           name?: string
           plan?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      reservations: {
+        Row: {
+          created_at: string
+          duration: number
+          end_time: string
+          id: string
+          price: number
+          spot_id: string
+          start_time: string
+          status: string | null
+          updated_at: string
+          user_id: string
+          vehicle_id: string
+        }
+        Insert: {
+          created_at?: string
+          duration: number
+          end_time: string
+          id?: string
+          price: number
+          spot_id: string
+          start_time: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+          vehicle_id: string
+        }
+        Update: {
+          created_at?: string
+          duration?: number
+          end_time?: string
+          id?: string
+          price?: number
+          spot_id?: string
+          start_time?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+          vehicle_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reservations_spot_id_fkey"
+            columns: ["spot_id"]
+            isOneToOne: false
+            referencedRelation: "parking_spots"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reservations_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      vehicles: {
+        Row: {
+          created_at: string
+          id: string
+          plate: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          plate: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          plate?: string
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }

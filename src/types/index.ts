@@ -1,28 +1,8 @@
 
-export interface Vehicle {
-  id: string;
-  plate: string;
-  addedAt: Date;
-}
-
-export interface ParkingSpot {
-  id: string;
-  name: string;
-  price: number;
-  lat: number;
-  lng: number;
-  available: boolean;
-}
-
-export interface Reservation {
-  id: string;
-  spotName: string;
-  vehiclePlate: string;
-  startTime: Date;
-  endTime: Date;
-  price: number;
-  duration: number; // in minutes
-}
+// Re-export types from hooks for backward compatibility
+export type { Vehicle } from '../hooks/useVehicles';
+export type { ParkingSpot } from '../hooks/useParkingSpots';
+export type { Reservation } from '../hooks/useReservations';
 
 export interface User {
   id: string;
