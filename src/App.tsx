@@ -5,6 +5,7 @@ import { Toaster } from './components/ui/sonner';
 import Index from './pages/Index';
 import { AuthPage } from './pages/AuthPage';
 import { WelcomePage } from './pages/WelcomePage';
+import { LandingPage } from './pages/LandingPage';
 import { AccountPage } from './pages/AccountPage';
 import { VehiclesPage } from './pages/VehiclesPage';
 import { HistoryPage } from './pages/HistoryPage';
@@ -25,7 +26,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
   
   if (!user) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/landing" replace />;
   }
   
   return <>{children}</>;
@@ -57,6 +58,10 @@ function AppRoutes() {
     navigate('/auth');
   };
 
+  const handleGetStarted = () => {
+    navigate('/auth');
+  };
+
   const handleUpgradeToPremium = () => {
     updateProfile({ plan: 'premium' });
   };
@@ -71,6 +76,14 @@ function AppRoutes() {
 
   return (
     <Routes>
+      <Route 
+        path="/landing" 
+        element={
+          <PublicRoute>
+            <LandingPage onGetStarted={handleGetStarted} />
+          </PublicRoute>
+        } 
+      />
       <Route 
         path="/auth" 
         element={
@@ -143,7 +156,8 @@ function AppRoutes() {
           </ProtectedRoute>
         } 
       />
-      <Route path="*" element={<NotFound />} />
+      {/* Redirect root to landing for new users */}
+      <Route path="*" element={<Navigate to="/landing" replace />} />
     </Routes>
   );
 }
