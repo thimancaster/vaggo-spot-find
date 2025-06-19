@@ -105,9 +105,9 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#081C2D] text-white">
+    <div className="min-h-screen bg-[#081C2D] text-white w-full">
       {/* Navigation */}
-      <nav className="border-b border-gray-700 bg-[#081C2D]/95 backdrop-blur-sm fixed w-full z-50">
+      <nav className="border-b border-gray-600 bg-[#081C2D]/98 backdrop-blur-sm fixed w-full z-50 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-2">
@@ -115,14 +115,14 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <span className="text-white text-xl font-bold">VAGGO</span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#benefits" className="text-gray-300 hover:text-[#7CFC00] transition-colors">Benefícios</a>
-              <a href="#how-it-works" className="text-gray-300 hover:text-[#7CFC00] transition-colors">Como Funciona</a>
-              <a href="#pricing" className="text-gray-300 hover:text-[#7CFC00] transition-colors">Planos</a>
-              <a href="#faq" className="text-gray-300 hover:text-[#7CFC00] transition-colors">FAQ</a>
+              <a href="#benefits" className="text-gray-200 hover:text-[#7CFC00] transition-colors font-medium">Benefícios</a>
+              <a href="#how-it-works" className="text-gray-200 hover:text-[#7CFC00] transition-colors font-medium">Como Funciona</a>
+              <a href="#pricing" className="text-gray-200 hover:text-[#7CFC00] transition-colors font-medium">Planos</a>
+              <a href="#faq" className="text-gray-200 hover:text-[#7CFC00] transition-colors font-medium">FAQ</a>
             </div>
             <Button
               onClick={onGetStarted}
-              className="bg-[#7CFC00] hover:bg-[#6BD300] text-[#081C2D] font-bold"
+              className="bg-[#7CFC00] hover:bg-[#6BD300] text-[#081C2D] font-bold shadow-lg border-0"
             >
               Começar Grátis
             </Button>
@@ -131,21 +131,21 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4">
+      <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-[#081C2D] to-[#0A1F33]">
         <div className="max-w-7xl mx-auto text-center">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white">
               Nunca mais perca tempo
               <span className="text-[#7CFC00]"> procurando vaga</span>
             </h1>
-            <p className="text-xl md:text-2xl text-gray-400 mb-8 leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
               Reserve vagas de estacionamento com antecedência e tenha a garantia de um local seguro para seu veículo. Economize tempo e estresse todos os dias.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
               <Button
                 onClick={onGetStarted}
                 size="lg"
-                className="bg-gradient-to-r from-[#7CFC00] to-lime-400 text-[#081C2D] font-bold text-lg px-8 py-4 h-auto"
+                className="bg-gradient-to-r from-[#7CFC00] to-lime-400 text-[#081C2D] font-bold text-lg px-8 py-4 h-auto shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200 border-0"
               >
                 Comece Grátis Agora
                 <ArrowRight className="ml-2 w-5 h-5" />
@@ -153,12 +153,12 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-[#7CFC00] text-[#7CFC00] hover:bg-[#7CFC00] hover:text-[#081C2D] font-bold text-lg px-8 py-4 h-auto"
+                className="border-2 border-[#7CFC00] text-[#7CFC00] hover:bg-[#7CFC00] hover:text-[#081C2D] font-bold text-lg px-8 py-4 h-auto bg-transparent"
               >
                 Ver Como Funciona
               </Button>
             </div>
-            <div className="flex items-center justify-center space-x-8 text-sm text-gray-400">
+            <div className="flex items-center justify-center space-x-8 text-sm text-gray-200">
               <div className="flex items-center space-x-2">
                 <Check className="w-4 h-4 text-[#7CFC00]" />
                 <span>Cadastro gratuito</span>
@@ -177,48 +177,48 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 px-4 bg-gray-800/50">
+      <section className="py-16 px-4 bg-[#0A2135] border-y border-gray-600">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-4xl font-bold text-[#7CFC00] mb-2">50k+</div>
-              <div className="text-gray-400">Usuários ativos</div>
+              <div className="text-gray-200 font-medium">Usuários ativos</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-[#7CFC00] mb-2">1M+</div>
-              <div className="text-gray-400">Reservas realizadas</div>
+              <div className="text-gray-200 font-medium">Reservas realizadas</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-[#7CFC00] mb-2">500+</div>
-              <div className="text-gray-400">Estacionamentos parceiros</div>
+              <div className="text-gray-200 font-medium">Estacionamentos parceiros</div>
             </div>
             <div>
               <div className="text-4xl font-bold text-[#7CFC00] mb-2">98%</div>
-              <div className="text-gray-400">Satisfação dos usuários</div>
+              <div className="text-gray-200 font-medium">Satisfação dos usuários</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Benefits Section */}
-      <section id="benefits" className="py-20 px-4">
+      <section id="benefits" className="py-20 px-4 bg-[#081C2D]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Por que escolher o <span className="text-[#7CFC00]">VAGGO</span>?
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-200 max-w-2xl mx-auto">
               Transforme sua experiência de estacionamento com tecnologia inteligente e praticidade incomparável.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {benefits.map((benefit, index) => (
-              <Card key={index} className="bg-gray-800/50 border-gray-600 text-center p-6 hover:border-[#7CFC00] transition-all duration-300 hover:transform hover:scale-105">
+              <Card key={index} className="bg-[#0A2135] border-gray-600 text-center p-6 hover:border-[#7CFC00] transition-all duration-300 hover:transform hover:scale-105 shadow-lg">
                 <CardContent className="pt-6">
                   <benefit.icon className="text-[#7CFC00] w-12 h-12 mx-auto mb-4" />
                   <h3 className="text-white font-semibold text-lg mb-3">{benefit.title}</h3>
-                  <p className="text-gray-400">{benefit.description}</p>
+                  <p className="text-gray-200">{benefit.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -227,28 +227,23 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* How it Works */}
-      <section id="how-it-works" className="py-20 px-4 bg-gray-800/30">
+      <section id="how-it-works" className="py-20 px-4 bg-[#0A2135]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">Como funciona</h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">Como funciona</h2>
+            <p className="text-xl text-gray-200 max-w-2xl mx-auto">
               Em apenas 4 passos simples, você está estacionado com segurança e tranquilidade.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
             {steps.map((step, index) => (
-              <div key={index} className="text-center">
-                <div className="w-16 h-16 bg-[#7CFC00] text-[#081C2D] rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">
+              <div key={index} className="text-center relative">
+                <div className="w-16 h-16 bg-[#7CFC00] text-[#081C2D] rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4 shadow-lg">
                   {step.number}
                 </div>
                 <h3 className="text-white font-semibold text-lg mb-3">{step.title}</h3>
-                <p className="text-gray-400">{step.description}</p>
-                {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute transform translate-x-20 -translate-y-8">
-                    <ArrowRight className="text-[#7CFC00] w-6 h-6" />
-                  </div>
-                )}
+                <p className="text-gray-200">{step.description}</p>
               </div>
             ))}
           </div>
@@ -256,34 +251,34 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-[#081C2D]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               O que nossos usuários dizem
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-200 max-w-2xl mx-auto">
               Milhares de pessoas já transformaram sua rotina com o VAGGO.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-gray-800/50 border-gray-600 p-6">
+              <Card key={index} className="bg-[#0A2135] border-gray-600 p-6 shadow-lg">
                 <CardContent className="pt-6">
                   <div className="flex items-center mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
                       <Star key={i} className="text-[#7CFC00] w-5 h-5 fill-current" />
                     ))}
                   </div>
-                  <p className="text-gray-300 mb-6 italic">"{testimonial.comment}"</p>
+                  <p className="text-gray-200 mb-6 italic">"{testimonial.comment}"</p>
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-[#7CFC00] text-[#081C2D] rounded-full flex items-center justify-center font-bold">
                       {testimonial.avatar}
                     </div>
                     <div>
                       <div className="text-white font-semibold">{testimonial.name}</div>
-                      <div className="text-gray-400 text-sm">{testimonial.role}</div>
+                      <div className="text-gray-300 text-sm">{testimonial.role}</div>
                     </div>
                   </div>
                 </CardContent>
@@ -294,47 +289,47 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Pricing Section */}
-      <section id="pricing" className="py-20 px-4 bg-gray-800/30">
+      <section id="pricing" className="py-20 px-4 bg-[#0A2135]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Escolha seu plano
             </h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            <p className="text-xl text-gray-200 max-w-2xl mx-auto">
               Comece grátis e faça upgrade quando quiser mais funcionalidades.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Free Plan */}
-            <Card className="bg-gray-800/50 border-gray-600 p-8">
+            <Card className="bg-[#081C2D] border-gray-600 p-8 shadow-lg">
               <CardHeader className="text-center pb-8">
                 <CardTitle className="text-2xl text-white mb-2">Gratuito</CardTitle>
                 <div className="text-4xl font-bold text-white mb-2">R$ 0</div>
-                <CardDescription className="text-gray-400">Para sempre</CardDescription>
+                <CardDescription className="text-gray-300">Para sempre</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-4 mb-8">
                   <li className="flex items-center space-x-3">
                     <Check className="text-[#7CFC00] w-5 h-5" />
-                    <span className="text-gray-300">1 veículo cadastrado</span>
+                    <span className="text-gray-200">1 veículo cadastrado</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-[#7CFC00] w-5 h-5" />
-                    <span className="text-gray-300">Reservas básicas</span>
+                    <span className="text-gray-200">Reservas básicas</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-[#7CFC00] w-5 h-5" />
-                    <span className="text-gray-300">Suporte por e-mail</span>
+                    <span className="text-gray-200">Suporte por e-mail</span>
                   </li>
                   <li className="flex items-center space-x-3">
                     <Check className="text-[#7CFC00] w-5 h-5" />
-                    <span className="text-gray-300">Histórico de reservas</span>
+                    <span className="text-gray-200">Histórico de reservas</span>
                   </li>
                 </ul>
                 <Button
                   onClick={onGetStarted}
-                  className="w-full bg-gray-700 hover:bg-gray-600 text-white"
+                  className="w-full bg-gray-600 hover:bg-gray-500 text-white border-0"
                 >
                   Começar Grátis
                 </Button>
@@ -342,7 +337,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             </Card>
 
             {/* Premium Plan */}
-            <Card className="bg-gradient-to-br from-[#7CFC00]/10 to-lime-400/10 border-[#7CFC00] p-8 relative">
+            <Card className="bg-gradient-to-br from-[#7CFC00]/20 to-lime-400/20 border-2 border-[#7CFC00] p-8 relative shadow-xl">
               <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                 <span className="bg-[#7CFC00] text-[#081C2D] px-4 py-1 rounded-full text-sm font-bold">
                   Mais Popular
@@ -354,7 +349,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                   <span>Premium</span>
                 </CardTitle>
                 <div className="text-4xl font-bold text-white mb-2">R$ 9,90</div>
-                <CardDescription className="text-gray-400">por mês</CardDescription>
+                <CardDescription className="text-gray-200">por mês</CardDescription>
               </CardHeader>
               <CardContent>
                 <ul className="space-y-4 mb-8">
@@ -385,7 +380,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 </ul>
                 <Button
                   onClick={onGetStarted}
-                  className="w-full bg-[#7CFC00] hover:bg-[#6BD300] text-[#081C2D] font-bold"
+                  className="w-full bg-[#7CFC00] hover:bg-[#6BD300] text-[#081C2D] font-bold border-0 shadow-lg"
                 >
                   Comece o Premium
                 </Button>
@@ -396,22 +391,22 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* FAQ Section */}
-      <section id="faq" className="py-20 px-4">
+      <section id="faq" className="py-20 px-4 bg-[#081C2D]">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Perguntas Frequentes
             </h2>
-            <p className="text-xl text-gray-400">
+            <p className="text-xl text-gray-200">
               Tire suas dúvidas sobre o VAGGO
             </p>
           </div>
 
           <div className="space-y-4">
             {faqItems.map((item, index) => (
-              <Card key={index} className="bg-gray-800/50 border-gray-600">
+              <Card key={index} className="bg-[#0A2135] border-gray-600 shadow-lg">
                 <CardHeader
-                  className="cursor-pointer"
+                  className="cursor-pointer hover:bg-[#0C2640] transition-colors"
                   onClick={() => setFaqOpen(faqOpen === index ? null : index)}
                 >
                   <div className="flex items-center justify-between">
@@ -425,7 +420,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 </CardHeader>
                 {faqOpen === index && (
                   <CardContent>
-                    <p className="text-gray-300">{item.answer}</p>
+                    <p className="text-gray-200">{item.answer}</p>
                   </CardContent>
                 )}
               </Card>
@@ -435,30 +430,30 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Final CTA */}
-      <section className="py-20 px-4 bg-gradient-to-r from-[#7CFC00]/10 to-lime-400/10">
+      <section className="py-20 px-4 bg-gradient-to-r from-[#7CFC00]/20 to-lime-400/20 border-t border-gray-600">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
             Pronto para transformar sua experiência de estacionamento?
           </h2>
-          <p className="text-xl text-gray-400 mb-8">
+          <p className="text-xl text-gray-200 mb-8">
             Junte-se a milhares de usuários que já descobriram a liberdade de estacionar sem estresse.
           </p>
           <Button
             onClick={onGetStarted}
             size="lg"
-            className="bg-gradient-to-r from-[#7CFC00] to-lime-400 text-[#081C2D] font-bold text-xl px-12 py-6 h-auto"
+            className="bg-gradient-to-r from-[#7CFC00] to-lime-400 text-[#081C2D] font-bold text-xl px-12 py-6 h-auto shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200 border-0"
           >
             Começar Gratuitamente
             <ArrowRight className="ml-3 w-6 h-6" />
           </Button>
-          <p className="text-sm text-gray-400 mt-4">
+          <p className="text-sm text-gray-300 mt-4">
             Sem cartão de crédito • Grátis para sempre • Comece em 2 minutos
           </p>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-700 py-12 px-4">
+      <footer className="border-t border-gray-600 py-12 px-4 bg-[#0A2135]">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
@@ -466,14 +461,14 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
                 <Car className="text-[#7CFC00] w-8 h-8" />
                 <span className="text-white text-xl font-bold">VAGGO</span>
               </div>
-              <p className="text-gray-400">
+              <p className="text-gray-200">
                 A solução inteligente para estacionamento urbano.
               </p>
             </div>
             
             <div>
               <h4 className="text-white font-semibold mb-4">Produto</h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-200">
                 <li><a href="#" className="hover:text-[#7CFC00] transition-colors">Como Funciona</a></li>
                 <li><a href="#" className="hover:text-[#7CFC00] transition-colors">Planos</a></li>
                 <li><a href="#" className="hover:text-[#7CFC00] transition-colors">Segurança</a></li>
@@ -482,7 +477,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             
             <div>
               <h4 className="text-white font-semibold mb-4">Suporte</h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-200">
                 <li><a href="#" className="hover:text-[#7CFC00] transition-colors">Central de Ajuda</a></li>
                 <li><a href="#" className="hover:text-[#7CFC00] transition-colors">Contato</a></li>
                 <li><a href="#" className="hover:text-[#7CFC00] transition-colors">FAQ</a></li>
@@ -491,7 +486,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             
             <div>
               <h4 className="text-white font-semibold mb-4">Empresa</h4>
-              <ul className="space-y-2 text-gray-400">
+              <ul className="space-y-2 text-gray-200">
                 <li><a href="#" className="hover:text-[#7CFC00] transition-colors">Sobre</a></li>
                 <li><a href="#" className="hover:text-[#7CFC00] transition-colors">Carreiras</a></li>
                 <li><a href="#" className="hover:text-[#7CFC00] transition-colors">Privacidade</a></li>
@@ -499,7 +494,7 @@ export function LandingPage({ onGetStarted }: LandingPageProps) {
             </div>
           </div>
           
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+          <div className="border-t border-gray-600 mt-8 pt-8 text-center text-gray-300">
             <p>&copy; 2024 VAGGO. Todos os direitos reservados.</p>
           </div>
         </div>

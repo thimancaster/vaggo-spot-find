@@ -1,8 +1,10 @@
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  margin: 0;
+  padding: 0;
   text-align: center;
+  width: 100%;
+  min-height: 100vh;
 }
 
 .logo {
@@ -39,4 +41,18 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Ensure no unwanted white spaces */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #081C2D;
+}
+
+/* Remove any default margins/paddings that could cause white bands */
+* {
+  box-sizing: border-box;
 }
