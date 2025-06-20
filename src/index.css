@@ -3,86 +3,96 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+/* Sistema de Paleta de Cores Global VAGGO */
 
 @layer base {
   :root {
-    --background: 255 255 255;
-    --foreground: 8 28 45;
+    /* Modo Claro (Tema Alternativo) */
+    --background: 244 246 248; /* #F4F6F8 - Fundo Principal */
+    --foreground: 8 28 45; /* #081C2D - Texto Principal */
 
-    --card: 255 255 255;
-    --card-foreground: 8 28 45;
+    --card: 255 255 255; /* #FFFFFF - Fundo de Componentes */
+    --card-foreground: 8 28 45; /* #081C2D - Texto Principal */
 
-    --popover: 255 255 255;
-    --popover-foreground: 8 28 45;
+    --popover: 255 255 255; /* #FFFFFF - Fundo de Componentes */
+    --popover-foreground: 8 28 45; /* #081C2D - Texto Principal */
 
-    --primary: 8 28 45;
-    --primary-foreground: 255 255 255;
+    --primary: 54 97 242; /* #3661F2 - Azul da Marca */
+    --primary-foreground: 255 255 255; /* #FFFFFF - Texto sobre azul */
 
-    --secondary: 248 250 252;
-    --secondary-foreground: 8 28 45;
+    --secondary: 255 255 255; /* #FFFFFF - Fundo de Componentes */
+    --secondary-foreground: 8 28 45; /* #081C2D - Texto Principal */
 
-    --muted: 248 250 252;
-    --muted-foreground: 100 116 139;
+    --muted: 255 255 255; /* #FFFFFF - Fundo de Componentes */
+    --muted-foreground: 106 120 137; /* #6A7889 - Texto Secundário */
 
-    --accent: 124 252 0;
-    --accent-foreground: 8 28 45;
+    --accent: 124 252 0; /* #7CFC00 - Ação e Destaque */
+    --accent-foreground: 8 28 45; /* #081C2D - Texto sobre verde (contraste) */
 
-    --destructive: 239 68 68;
+    --destructive: 239 68 68; /* Vermelho para ações destrutivas */
     --destructive-foreground: 255 255 255;
 
-    --border: 226 232 240;
-    --input: 226 232 240;
-    --ring: 8 28 45;
+    --border: 209 217 224; /* #D1D9E0 - Bordas e Divisores */
+    --input: 209 217 224; /* #D1D9E0 - Bordas de inputs */
+    --ring: 124 252 0; /* #7CFC00 - Ação e Destaque para foco */
 
     --radius: 0.5rem;
 
+    /* Cores específicas da marca */
+    --brand-blue: 54 97 242; /* #3661F2 - Azul da Marca */
+    --action-green: 124 252 0; /* #7CFC00 - Ação e Destaque */
+
     --sidebar-background: 255 255 255;
     --sidebar-foreground: 8 28 45;
-    --sidebar-primary: 8 28 45;
+    --sidebar-primary: 54 97 242;
     --sidebar-primary-foreground: 255 255 255;
-    --sidebar-accent: 248 250 252;
+    --sidebar-accent: 255 255 255;
     --sidebar-accent-foreground: 8 28 45;
-    --sidebar-border: 226 232 240;
+    --sidebar-border: 209 217 224;
     --sidebar-ring: 124 252 0;
   }
 
   .dark {
-    --background: 8 28 45;
-    --foreground: 255 255 255;
+    /* Modo Escuro (Tema Padrão) */
+    --background: 8 28 45; /* #081C2D - Fundo Principal */
+    --foreground: 255 255 255; /* #FFFFFF - Texto Principal */
 
-    --card: 10 33 53;
-    --card-foreground: 255 255 255;
+    --card: 26 45 61; /* #1A2D3D - Fundo de Componentes */
+    --card-foreground: 255 255 255; /* #FFFFFF - Texto Principal */
 
-    --popover: 8 28 45;
-    --popover-foreground: 255 255 255;
+    --popover: 8 28 45; /* #081C2D - Fundo Principal */
+    --popover-foreground: 255 255 255; /* #FFFFFF - Texto Principal */
 
-    --primary: 124 252 0;
-    --primary-foreground: 8 28 45;
+    --primary: 54 97 242; /* #3661F2 - Azul da Marca */
+    --primary-foreground: 255 255 255; /* #FFFFFF - Texto sobre azul */
 
-    --secondary: 15 40 65;
-    --secondary-foreground: 255 255 255;
+    --secondary: 26 45 61; /* #1A2D3D - Fundo de Componentes */
+    --secondary-foreground: 255 255 255; /* #FFFFFF - Texto Principal */
 
-    --muted: 15 40 65;
-    --muted-foreground: 156 163 175;
+    --muted: 26 45 61; /* #1A2D3D - Fundo de Componentes */
+    --muted-foreground: 169 180 194; /* #A9B4C2 - Texto Secundário */
 
-    --accent: 124 252 0;
-    --accent-foreground: 8 28 45;
+    --accent: 124 252 0; /* #7CFC00 - Ação e Destaque */
+    --accent-foreground: 8 28 45; /* #081C2D - Texto sobre verde (contraste) */
 
-    --destructive: 239 68 68;
+    --destructive: 239 68 68; /* Vermelho para ações destrutivas */
     --destructive-foreground: 255 255 255;
 
-    --border: 75 85 99;
-    --input: 75 85 99;
-    --ring: 124 252 0;
+    --border: 74 92 106; /* #4A5C6A - Bordas e Divisores */
+    --input: 74 92 106; /* #4A5C6A - Bordas de inputs */
+    --ring: 124 252 0; /* #7CFC00 - Ação e Destaque para foco */
+
+    /* Cores específicas da marca */
+    --brand-blue: 54 97 242; /* #3661F2 - Azul da Marca */
+    --action-green: 124 252 0; /* #7CFC00 - Ação e Destaque */
 
     --sidebar-background: 8 28 45;
     --sidebar-foreground: 255 255 255;
-    --sidebar-primary: 124 252 0;
-    --sidebar-primary-foreground: 8 28 45;
-    --sidebar-accent: 15 40 65;
+    --sidebar-primary: 54 97 242;
+    --sidebar-primary-foreground: 255 255 255;
+    --sidebar-accent: 26 45 61;
     --sidebar-accent-foreground: 255 255 255;
-    --sidebar-border: 75 85 99;
+    --sidebar-border: 74 92 106;
     --sidebar-ring: 124 252 0;
   }
 }
@@ -97,7 +107,7 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  /* Remove any white strips or unwanted spacing */
+  /* Remove qualquer espaçamento indesejado */
   html, body, #root {
     margin: 0;
     padding: 0;
@@ -107,7 +117,7 @@
   }
 }
 
-/* Custom gradient utilities for both themes */
+/* Utilitários customizados para gradientes e efeitos */
 @layer utilities {
   .bg-gradient-primary {
     @apply bg-gradient-to-r from-primary to-accent;
@@ -127,5 +137,22 @@
   
   .dark .shadow-glow {
     box-shadow: 0 0 20px rgba(124, 252, 0, 0.2);
+  }
+
+  /* Classe utilitária para cor da marca */
+  .text-brand-blue {
+    color: rgb(var(--brand-blue));
+  }
+  
+  .bg-brand-blue {
+    background-color: rgb(var(--brand-blue));
+  }
+  
+  .text-action-green {
+    color: rgb(var(--action-green));
+  }
+  
+  .bg-action-green {
+    background-color: rgb(var(--action-green));
   }
 }

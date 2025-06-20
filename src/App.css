@@ -7,7 +7,7 @@
   min-height: 100vh;
 }
 
-/* Ensure no unwanted white spaces */
+/* Garantir que não há espaços em branco indesejados */
 body, html {
   margin: 0;
   padding: 0;
@@ -15,14 +15,22 @@ body, html {
   min-height: 100vh;
 }
 
-/* Remove any default margins/paddings that could cause white bands */
+/* Remove margens/paddings padrão que podem causar faixas brancas */
 * {
   box-sizing: border-box;
 }
 
-/* Smooth transitions for theme changes */
+/* Transições suaves para mudanças de tema */
 * {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-duration: 300ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Garantir que a aplicação ocupe toda a tela sem espaços */
+.App {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }

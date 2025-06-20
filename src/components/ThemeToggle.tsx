@@ -7,16 +7,17 @@ export function ThemeToggle() {
   const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
-    // Check for saved theme preference or default to dark mode
+    // Define modo escuro como padrão conforme especificação
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-      setDarkMode(true);
-      document.documentElement.classList.add('dark');
-    } else {
+    if (savedTheme === 'light') {
       setDarkMode(false);
       document.documentElement.classList.remove('dark');
+    } else {
+      // Padrão é modo escuro
+      setDarkMode(true);
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
     }
   }, []);
 
@@ -38,7 +39,7 @@ export function ThemeToggle() {
       variant="outline"
       size="sm"
       onClick={toggleTheme}
-      className="bg-transparent border-current hover:bg-primary/10"
+      className="bg-transparent border-current hover:bg-accent/10 transition-all duration-300"
     >
       {darkMode ? (
         <Sun className="h-4 w-4" />
