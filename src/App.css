@@ -49,7 +49,8 @@ body, html {
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  background-color: #081C2D;
+  background-color: rgb(var(--background-main));
+  transition: background-color 0.3s ease;
 }
 
 /* Remove any default margins/paddings that could cause white bands */
