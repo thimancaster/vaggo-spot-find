@@ -1,12 +1,13 @@
 
 import { useState } from 'react';
-import { Search, MapPin, Car } from 'lucide-react';
+import { Car } from 'lucide-react';
 import { MapView } from '../components/MapView';
 import { ActiveReservation } from '../components/ActiveReservation';
+import { LocationSearch } from '../components/LocationSearch';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import { useParkingSpots } from '../hooks/useParkingSpots';
 import { useVehicles } from '../hooks/useVehicles';
 import { useReservations } from '../hooks/useReservations';
-import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { useToast } from '../hooks/use-toast';
 import { BgRemovedImage } from '../components/BgRemovedImage';
@@ -17,12 +18,20 @@ interface HomePageProps {
 
 export function HomePage({ onNavigateToVehicles }: HomePageProps) {
   const [selectedSpot, setSelectedSpot] = useState<any>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchLocation, setSearchLocation] = useState<{address: string; lat: number; lng: number} | null>(null);
   const { toast } = useToast();
   
   const { parkingSpots, loading: spotsLoading } = useParkingSpots();
   const { vehicles, loading: vehiclesLoading } = useVehicles();
   const { currentReservation, makeReservation, endReservation } = useReservations();
+
+  const handleLocationSelect = (location: { address: string; lat: number; lng: number }) => {
+    setSearchLocation(location);
+    toast({
+      title: "Localização selecionada",
+      description: `Buscando vagas próximas a ${location.address}`,
+    });
+  };
 
   const handleReservation = async () => {
     if (!selectedSpot) {
@@ -56,21 +65,25 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
     const reservation = await makeReservation(selectedSpot, vehicles[0].id);
     if (reservation) {
       setSelectedSpot(null); // Clear selection after successful reservation
+      toast({
+        title: "Reserva confirmada!",
+        description: `Vaga reservada em ${selectedSpot.name}`,
+      });
     }
   };
 
   const handleEndReservation = async () => {
     if (currentReservation) {
       await endReservation(currentReservation.id);
+      toast({
+        title: "Reserva finalizada",
+        description: "Sua reserva foi finalizada com sucesso.",
+      });
     }
   };
 
   if (spotsLoading || vehiclesLoading) {
-    return (
-      <div className="min-h-screen bg-[#081C2D] flex items-center justify-center">
-        <div className="text-white text-lg">Carregando...</div>
-      </div>
-    );
+    return <LoadingSpinner message="Carregando vagas disponíveis..." fullScreen />;
   }
 
   return (
@@ -83,21 +96,22 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
           className="h-20 w-auto mx-auto mb-10"
         />
         
-        {/* Search Bar */}
-        <div className="relative max-w-md mx-auto mb-6">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-          <Input
-            type="text"
+        {/* Enhanced Search Bar */}
+        <div className="max-w-md mx-auto mb-6">
+          <LocationSearch
+            onLocationSelect={handleLocationSelect}
             placeholder="Para onde você quer ir?"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-12 bg-gray-800 border-gray-600 text-white placeholder-gray-400 rounded-full h-12"
           />
+          {searchLocation && (
+            <p className="text-gray-400 text-sm mt-2">
+              📍 {searchLocation.address}
+            </p>
+          )}
         </div>
       </div>
 
       <div className="px-4">
-        {/* Active Reservation */}
+        {/* Active Reservation with Enhanced Timer */}
         {currentReservation && (
           <ActiveReservation
             reservation={currentReservation}
@@ -105,7 +119,7 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
           />
         )}
 
-        {/* Map */}
+        {/* Enhanced Map with Geolocation */}
         <div className="mb-6">
           <MapView
             parkingSpots={parkingSpots}
@@ -114,13 +128,15 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
           />
         </div>
 
-        {/* Selected Spot Info */}
+        {/* Enhanced Selected Spot Info */}
         {selectedSpot && !currentReservation && (
           <div className="mb-6">
             <div className="bg-gray-800 rounded-xl p-6 border border-gray-600">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <MapPin className="text-[#7CFC00] w-6 h-6" />
+                  <div className="w-10 h-10 bg-[#7CFC00] rounded-full flex items-center justify-center">
+                    <span className="text-[#081C2D] font-bold">P</span>
+                  </div>
                   <div>
                     <h3 className="text-white font-semibold text-lg">{selectedSpot.name}</h3>
                     <p className="text-gray-400">Disponível agora</p>
@@ -132,17 +148,32 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
                 </div>
               </div>
               
+              {/* Reservation Info */}
+              <div className="bg-gray-700 rounded-lg p-3 mb-4">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-300">Duração:</span>
+                  <span className="text-white">1 hora</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-300">Veículo:</span>
+                  <span className="text-white">
+                    {vehicles.length > 0 ? vehicles[0].plate : 'Nenhum veículo'}
+                  </span>
+                </div>
+              </div>
+              
               <Button 
                 onClick={handleReservation}
+                disabled={vehicles.length === 0}
                 className="w-full bg-gradient-to-r from-[#7CFC00] to-lime-400 text-[#081C2D] font-bold text-lg h-12 rounded-xl transition-transform duration-200 hover:scale-105"
               >
-                Reservar vaga
+                {vehicles.length === 0 ? 'Adicione um veículo primeiro' : 'Reservar vaga'}
               </Button>
             </div>
           </div>
         )}
 
-        {/* Manage Vehicles */}
+        {/* Enhanced Manage Vehicles */}
         <div>
           <button
             onClick={onNavigateToVehicles}
@@ -153,7 +184,12 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
                 <div className="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center">
                   <Car className="text-[#7CFC00] w-5 h-5" />
                 </div>
-                <span className="text-white font-medium">Gerenciar veículos</span>
+                <div className="text-left">
+                  <span className="text-white font-medium block">Gerenciar veículos</span>
+                  <span className="text-gray-400 text-sm">
+                    {vehicles.length === 0 ? 'Nenhum veículo cadastrado' : `${vehicles.length} veículo(s) cadastrado(s)`}
+                  </span>
+                </div>
               </div>
               <span className="text-gray-400">→</span>
             </div>

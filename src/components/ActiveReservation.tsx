@@ -1,7 +1,9 @@
 
-import React, { useState } from 'react';
-import { MapPin, Clock, Car, StopCircle } from 'lucide-react';
+import React from 'react';
+import { MapPin, Clock, Car, StopCircle, AlertTriangle } from 'lucide-react';
 import { Reservation } from '../hooks/useReservations';
+import { useReservationTimer } from '../hooks/useReservationTimer';
+import { useNotifications } from '../hooks/useNotifications';
 import { Button } from './ui/button';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -12,48 +14,67 @@ interface ActiveReservationProps {
 }
 
 export function ActiveReservation({ reservation, onEndReservation }: ActiveReservationProps) {
-  const [timeRemaining, setTimeRemaining] = useState('');
+  const { timeRemaining, formatTimeDisplay } = useReservationTimer(reservation);
+  useNotifications(reservation);
 
   const formatTime = (dateString: string) => {
     return format(new Date(dateString), 'HH:mm', { locale: ptBR });
   };
 
-  const calculateTimeRemaining = () => {
-    const endTime = new Date(reservation.end_time);
-    const now = new Date();
-    const diff = endTime.getTime() - now.getTime();
-    
-    if (diff <= 0) return 'Expirado';
-    
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    
-    if (hours > 0) {
-      return `${hours}h ${minutes}min`;
-    }
-    return `${minutes}min`;
+  const getTimerColor = () => {
+    if (timeRemaining.expired) return 'text-red-400';
+    if (timeRemaining.total < 5 * 60 * 1000) return 'text-red-400'; // < 5 min
+    if (timeRemaining.total < 15 * 60 * 1000) return 'text-yellow-400'; // < 15 min
+    return 'text-[#7CFC00]';
   };
 
-  // Update time remaining every minute
-  React.useEffect(() => {
-    const updateTime = () => {
-      setTimeRemaining(calculateTimeRemaining());
-    };
-    
-    updateTime();
-    const interval = setInterval(updateTime, 60000);
-    
-    return () => clearInterval(interval);
-  }, [reservation.end_time]);
+  const getStatusColor = () => {
+    if (timeRemaining.expired) return 'from-red-600/10 to-red-400/10 border-red-400/30';
+    if (timeRemaining.total < 5 * 60 * 1000) return 'from-red-600/10 to-red-400/10 border-red-400/30';
+    if (timeRemaining.total < 15 * 60 * 1000) return 'from-yellow-600/10 to-yellow-400/10 border-yellow-400/30';
+    return 'from-[#7CFC00]/10 to-lime-400/10 border-[#7CFC00]/30';
+  };
 
   return (
-    <div className="bg-gradient-to-r from-[#7CFC00]/10 to-lime-400/10 rounded-xl p-6 border border-[#7CFC00]/30 mb-6">
+    <div className={`bg-gradient-to-r ${getStatusColor()} rounded-xl p-6 border mb-6`}>
+      {/* Header with status */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-[#7CFC00] rounded-full animate-pulse" />
-          <span className="text-[#7CFC00] font-bold">RESERVA ATIVA</span>
+          {timeRemaining.expired ? (
+            <AlertTriangle className="w-3 h-3 text-red-400" />
+          ) : (
+            <div className="w-3 h-3 bg-[#7CFC00] rounded-full animate-pulse" />
+          )}
+          <span className={`font-bold ${timeRemaining.expired ? 'text-red-400' : 'text-[#7CFC00]'}`}>
+            {timeRemaining.expired ? 'RESERVA EXPIRADA' : 'RESERVA ATIVA'}
+          </span>
         </div>
-        <span className="text-white font-bold">{timeRemaining}</span>
+        <div className="text-right">
+          <span className={`font-bold text-lg ${getTimerColor()}`}>
+            {formatTimeDisplay()}
+          </span>
+          {timeRemaining.total < 15 * 60 * 1000 && !timeRemaining.expired && (
+            <p className="text-yellow-400 text-xs">Expira em breve!</p>
+          )}
+        </div>
+      </div>
+
+      {/* Progress bar */}
+      <div className="mb-4">
+        <div className="w-full bg-gray-700 rounded-full h-2">
+          <div 
+            className={`h-2 rounded-full transition-all duration-1000 ${
+              timeRemaining.expired ? 'bg-red-400' :
+              timeRemaining.total < 5 * 60 * 1000 ? 'bg-red-400' :
+              timeRemaining.total < 15 * 60 * 1000 ? 'bg-yellow-400' :
+              'bg-[#7CFC00]'
+            }`}
+            style={{ 
+              width: timeRemaining.expired ? '100%' : 
+                     `${Math.max(0, (timeRemaining.total / (reservation.duration * 60 * 1000)) * 100)}%` 
+            }}
+          />
+        </div>
       </div>
 
       {/* Location */}
@@ -85,14 +106,30 @@ export function ActiveReservation({ reservation, onEndReservation }: ActiveReser
         </span>
       </div>
 
-      {/* End Reservation Button */}
+      {/* Action Button */}
       <Button
         onClick={onEndReservation}
-        className="w-full bg-red-600 hover:bg-red-700 text-white font-bold h-12 rounded-xl transition-all duration-200"
+        className={`w-full font-bold h-12 rounded-xl transition-all duration-200 ${
+          timeRemaining.expired 
+            ? 'bg-red-600 hover:bg-red-700 text-white'
+            : 'bg-red-600 hover:bg-red-700 text-white'
+        }`}
       >
         <StopCircle className="w-5 h-5 mr-2" />
-        Finalizar Reserva
+        {timeRemaining.expired ? 'Finalizar Reserva Expirada' : 'Finalizar Reserva'}
       </Button>
+
+      {/* Extension option (for future implementation) */}
+      {!timeRemaining.expired && timeRemaining.total < 15 * 60 * 1000 && (
+        <Button
+          variant="outline"
+          className="w-full mt-2 border-[#7CFC00] text-[#7CFC00] hover:bg-[#7CFC00] hover:text-[#081C2D]"
+          onClick={() => console.log('Extend reservation')}
+        >
+          <Clock className="w-4 h-4 mr-2" />
+          Estender Reserva (+30min)
+        </Button>
+      )}
     </div>
   );
 }
