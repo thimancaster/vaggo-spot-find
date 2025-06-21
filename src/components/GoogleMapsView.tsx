@@ -52,7 +52,7 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
   };
 
   useEffect(() => {
-    if (!mapLoaded || !mapRef.current) return;
+    if (!mapLoaded || !mapRef.current || !window.google) return;
 
     // Usar localização do usuário ou São Paulo como fallback
     const center = {
@@ -60,7 +60,7 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
       lng: longitude || -46.6333
     };
 
-    const googleMap = new google.maps.Map(mapRef.current, {
+    const googleMap = new window.google.maps.Map(mapRef.current, {
       zoom: 15,
       center: center,
       styles: [
@@ -85,13 +85,13 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
     setMap(googleMap);
 
     // Adicionar marcador da localização do usuário
-    if (latitude && longitude) {
-      new google.maps.Marker({
+    if (latitude && longitude && window.google) {
+      new window.google.maps.Marker({
         position: { lat: latitude, lng: longitude },
         map: googleMap,
         title: 'Sua localização',
         icon: {
-          path: google.maps.SymbolPath.CIRCLE,
+          path: window.google.maps.SymbolPath.CIRCLE,
           scale: 8,
           fillColor: '#7CFC00',
           fillOpacity: 1,
@@ -103,19 +103,19 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
   }, [mapLoaded, latitude, longitude]);
 
   useEffect(() => {
-    if (!map || !parkingSpots.length) return;
+    if (!map || !parkingSpots.length || !window.google) return;
 
     // Limpar marcadores existentes
     markers.forEach(marker => marker.setMap(null));
 
     // Criar novos marcadores para as vagas
     const newMarkers = parkingSpots.map(spot => {
-      const marker = new google.maps.Marker({
+      const marker = new window.google.maps.Marker({
         position: { lat: spot.lat, lng: spot.lng },
         map: map,
         title: spot.name,
         icon: {
-          path: google.maps.SymbolPath.CIRCLE,
+          path: window.google.maps.SymbolPath.CIRCLE,
           scale: 12,
           fillColor: spot.available ? '#7CFC00' : '#ff4444',
           fillOpacity: 1,
@@ -129,7 +129,7 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
         onSpotSelect(spot);
         
         // Criar info window
-        const infoWindow = new google.maps.InfoWindow({
+        const infoWindow = new window.google.maps.InfoWindow({
           content: `
             <div style="color: #333; padding: 8px;">
               <h3 style="margin: 0 0 8px 0; font-size: 16px;">${spot.name}</h3>
