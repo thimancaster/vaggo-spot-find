@@ -14,7 +14,7 @@ export function Navigation({ onGetStarted }: NavigationProps) {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-2">
             <Car className="text-highlight w-8 h-8" style={{ color: 'rgb(var(--highlight-primary))' }} />
-            <span className="text-main text-xl font-bold" style={{ color: 'rgb(var(--text-primary))' }}>VAGGO</span>
+            <span className="text-main text-xl font-bold" style={{ color: 'rgb(var(--text-primary))' }}>VagGo</span>
           </div>
           <div className="hidden md:flex items-center space-x-8">
             <a href="#benefits" className="text-secondary hover:text-highlight transition-colors font-medium" style={{ color: 'rgb(var(--text-secondary))' }}>Benefícios</a>

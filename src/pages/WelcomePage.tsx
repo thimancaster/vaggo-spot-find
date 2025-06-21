@@ -13,7 +13,7 @@ export function WelcomePage({ onLogin }: WelcomePageProps) {
       <div className="flex items-center justify-between p-4 border-b border-gray-700">
         <div className="flex items-center space-x-2">
           <Car className="text-[#7CFC00] w-8 h-8" />
-          <span className="text-white text-xl font-bold">VAGGO</span>
+          <span className="text-white text-xl font-bold">VagGo</span>
         </div>
         <Button
           onClick={onLogin}
@@ -44,7 +44,7 @@ export function WelcomePage({ onLogin }: WelcomePageProps) {
 
       {/* Features */}
       <div className="px-4 py-12">
-        <h2 className="text-2xl font-bold text-center mb-8">Por que escolher o VAGGO?</h2>
+        <h2 className="text-2xl font-bold text-center mb-8">Por que escolher o VagGo?</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           <div className="bg-gray-800 rounded-xl p-6 border border-gray-600 text-center">

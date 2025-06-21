@@ -39,7 +39,7 @@ export function AuthPage() {
         <div className="text-center mb-8">
           <BgRemovedImage
             src="/lovable-uploads/e9f2a366-3ff8-48f6-b007-8e124ddf7234.png"
-            alt="VAGGO Logo"
+            alt="VagGo Logo"
             className="h-16 w-auto mx-auto mb-6"
           />
           <h1 className="text-2xl font-bold text-white mb-2">
@@ -47,7 +47,7 @@ export function AuthPage() {
           </h1>
           <p className="text-gray-400">
             {isSignUp 
-              ? 'Cadastre-se para começar a usar o VAGGO' 
+              ? 'Cadastre-se para começar a usar o VagGo' 
               : 'Entre na sua conta para continuar'
             }
           </p>

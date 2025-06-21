@@ -92,7 +92,7 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
       <div className="text-center py-8 px-4">
         <BgRemovedImage
           src="/lovable-uploads/e9f2a366-3ff8-48f6-b007-8e124ddf7234.png"
-          alt="VAGGO Logo"
+          alt="VagGo Logo"
           className="h-20 w-auto mx-auto mb-10"
         />
         
