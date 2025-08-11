@@ -1,14 +1,55 @@
 
 import { Check } from 'lucide-react';
 import { Button } from '../ui/button';
+import { supabase } from '@/integrations/supabase/client';
+import { useAuth } from '@/hooks/useAuth';
+import { toast } from 'sonner';
 
 interface PricingSectionProps {
   onGetStarted: () => void;
 }
 
 export function PricingSection({ onGetStarted }: PricingSectionProps) {
+  const { session, subscriptionTier } = useAuth();
+
+  const handlePlanSelect = async (planId: string) => {
+    if (!session) {
+      onGetStarted();
+      return;
+    }
+
+    if (planId === 'free') {
+      toast.success('Você já está no plano gratuito!');
+      return;
+    }
+
+    try {
+      toast.loading('Redirecionando para o checkout...');
+      
+      const { data, error } = await supabase.functions.invoke('create-checkout', {
+        body: { plan: planId },
+        headers: {
+          Authorization: `Bearer ${session.access_token}`
+        }
+      });
+
+      if (error) {
+        console.error('Checkout error:', error);
+        toast.error('Erro ao processar pagamento');
+        return;
+      }
+
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      toast.error('Erro ao processar pagamento');
+    }
+  };
   const plans = [
     {
+      id: 'free',
       name: 'Gratuito',
       price: 'R$ 0',
       period: '/mês',
@@ -20,6 +61,7 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
       popular: false
     },
     {
+      id: 'premium',
       name: 'Premium',
       price: 'R$ 19,90',
       period: '/mês',
@@ -33,6 +75,7 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
       popular: true
     },
     {
+      id: 'empresarial',
       name: 'Empresarial',
       price: 'R$ 49,90',
       period: '/mês',
@@ -62,12 +105,23 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
           {plans.map((plan, index) => (
             <div 
               key={index} 
-              className={`p-8 rounded-lg border-2 relative ${plan.popular ? 'border-highlight' : 'border-neutral/20'}`}
+              className={`p-8 rounded-lg border-2 relative ${
+                subscriptionTier === plan.id ? 'border-green-500 bg-green-50' : 
+                plan.popular ? 'border-highlight' : 'border-neutral/20'
+              }`}
               style={{ 
-                borderColor: plan.popular ? 'rgb(var(--highlight-primary))' : 'rgb(var(--border-neutral) / 0.2)' 
+                borderColor: subscriptionTier === plan.id ? 'rgb(34, 197, 94)' :
+                  plan.popular ? 'rgb(var(--highlight-primary))' : 'rgb(var(--border-neutral) / 0.2)' 
               }}
             >
-              {plan.popular && (
+              {subscriptionTier === plan.id && (
+                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                  <span className="px-4 py-2 rounded-full text-sm font-bold bg-green-500 text-white">
+                    Seu Plano
+                  </span>
+                </div>
+              )}
+              {plan.popular && subscriptionTier !== plan.id && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <span className="px-4 py-2 rounded-full text-sm font-bold" style={{ backgroundColor: 'rgb(var(--highlight-primary))', color: 'rgb(var(--text-on-highlight))' }}>
                     Mais Popular
@@ -98,9 +152,10 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
                 ))}
               </ul>
               <Button
-                onClick={onGetStarted}
+                onClick={() => handlePlanSelect(plan.id)}
                 className={`w-full ${plan.popular ? 'bg-highlight text-on-highlight' : 'border'}`}
                 variant={plan.popular ? 'default' : 'outline'}
+                disabled={subscriptionTier === plan.id}
                 style={plan.popular ? { 
                   backgroundColor: 'rgb(var(--highlight-primary))', 
                   color: 'rgb(var(--text-on-highlight))' 
@@ -109,7 +164,8 @@ export function PricingSection({ onGetStarted }: PricingSectionProps) {
                   color: 'rgb(var(--text-primary))' 
                 }}
               >
-                {plan.name === 'Gratuito' ? 'Começar Grátis' : 'Assinar Agora'}
+                {subscriptionTier === plan.id ? 'Plano Atual' : 
+                 plan.id === 'free' ? 'Começar Grátis' : 'Assinar Agora'}
               </Button>
             </div>
           ))}

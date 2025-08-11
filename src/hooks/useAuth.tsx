@@ -19,10 +19,14 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
+  subscribed: boolean;
+  subscriptionTier: string;
+  subscriptionEnd: string | null;
   signUp: (email: string, password: string, name: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: any }>;
+  checkSubscription: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -32,6 +36,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [subscribed, setSubscribed] = useState(false);
+  const [subscriptionTier, setSubscriptionTier] = useState('free');
+  const [subscriptionEnd, setSubscriptionEnd] = useState<string | null>(null);
 
   useEffect(() => {
     // Configure auth state listener
@@ -82,6 +89,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  // Check subscription when session changes
+  useEffect(() => {
+    if (session) {
+      checkSubscription();
+    }
+  }, [session]);
 
   const signUp = async (email: string, password: string, name: string) => {
     try {
@@ -168,16 +182,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const checkSubscription = async () => {
+    if (!session) return;
+    
+    try {
+      const { data, error } = await supabase.functions.invoke('check-subscription', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`
+        }
+      });
+
+      if (error) {
+        console.error('Error checking subscription:', error);
+        return;
+      }
+
+      setSubscribed(data?.subscribed || false);
+      setSubscriptionTier(data?.subscription_tier || 'free');
+      setSubscriptionEnd(data?.subscription_end || null);
+    } catch (error) {
+      console.error('Subscription check error:', error);
+    }
+  };
+
   return (
     <AuthContext.Provider value={{
       user,
       session,
       profile,
       loading,
+      subscribed,
+      subscriptionTier,
+      subscriptionEnd,
       signUp,
       signIn,
       signOut,
-      updateProfile
+      updateProfile,
+      checkSubscription
     }}>
       {children}
     </AuthContext.Provider>
