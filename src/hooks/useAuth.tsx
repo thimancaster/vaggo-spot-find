@@ -18,6 +18,7 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   profile: Profile | null;
+  userRole: 'admin' | 'fiscal' | 'user' | null;
   loading: boolean;
   subscribed: boolean;
   subscriptionTier: string;
@@ -35,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [userRole, setUserRole] = useState<'admin' | 'fiscal' | 'user' | null>(null);
   const [loading, setLoading] = useState(true);
   const [subscribed, setSubscribed] = useState(false);
   const [subscriptionTier, setSubscriptionTier] = useState('free');
@@ -68,12 +70,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 };
                 setProfile(safeProfile);
               }
+
+              // Fetch user role
+              const { data: roleData, error: roleError } = await supabase
+                .from('user_roles')
+                .select('role')
+                .eq('user_id', session.user.id)
+                .maybeSingle();
+
+              if (roleError) {
+                console.error('Error fetching user role:', roleError);
+                setUserRole('user'); // Default role
+              } else {
+                setUserRole(roleData?.role || 'user');
+              }
             } catch (err) {
               console.error('Profile fetch error:', err);
             }
           }, 0);
         } else {
           setProfile(null);
+          setUserRole(null);
         }
         
         setLoading(false);
@@ -210,6 +227,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       user,
       session,
       profile,
+      userRole,
       loading,
       subscribed,
       subscriptionTier,

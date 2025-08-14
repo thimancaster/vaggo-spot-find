@@ -11,6 +11,8 @@ import { VehiclesPage } from './pages/VehiclesPage';
 import { HistoryPage } from './pages/HistoryPage';
 import { PlansPage } from './pages/PlansPage';
 import { SupportPage } from './pages/SupportPage';
+import { AdminPage } from './pages/AdminPage';
+import { FiscalPage } from './pages/FiscalPage';
 import NotFound from './pages/NotFound';
 import './App.css';
 
@@ -153,6 +155,22 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <SupportPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/admin" 
+        element={
+          <ProtectedRoute>
+            <AdminPage onBack={handleBack} />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/fiscal" 
+        element={
+          <ProtectedRoute>
+            <FiscalPage onBack={handleBack} />
           </ProtectedRoute>
         } 
       />

@@ -19,6 +19,7 @@ interface HomePageProps {
 export function HomePage({ onNavigateToVehicles }: HomePageProps) {
   const [selectedSpot, setSelectedSpot] = useState<any>(null);
   const [searchLocation, setSearchLocation] = useState<{address: string; lat: number; lng: number} | null>(null);
+  const [reservationLoading, setReservationLoading] = useState(false);
   const { toast } = useToast();
   
   const { parkingSpots, loading: spotsLoading } = useParkingSpots();
@@ -61,14 +62,19 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
       return;
     }
 
-    // Use the first vehicle for demo purposes
-    const reservation = await makeReservation(selectedSpot, vehicles[0].id);
-    if (reservation) {
-      setSelectedSpot(null); // Clear selection after successful reservation
-      toast({
-        title: "Reserva confirmada!",
-        description: `Vaga reservada em ${selectedSpot.name}`,
-      });
+    setReservationLoading(true);
+    try {
+      // Use the first vehicle for demo purposes
+      const reservation = await makeReservation(selectedSpot, vehicles[0].id);
+      if (reservation) {
+        setSelectedSpot(null); // Clear selection after successful reservation
+        toast({
+          title: "Reserva confirmada!",
+          description: `Vaga reservada em ${selectedSpot.name}`,
+        });
+      }
+    } finally {
+      setReservationLoading(false);
     }
   };
 
@@ -164,10 +170,10 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
               
               <Button 
                 onClick={handleReservation}
-                disabled={vehicles.length === 0}
+                disabled={vehicles.length === 0 || reservationLoading}
                 className="w-full bg-gradient-to-r from-[#7CFC00] to-lime-400 text-[#081C2D] font-bold text-lg h-12 rounded-xl transition-transform duration-200 hover:scale-105"
               >
-                {vehicles.length === 0 ? 'Adicione um veículo primeiro' : 'Reservar vaga'}
+                {reservationLoading ? 'Reservando...' : vehicles.length === 0 ? 'Adicione um veículo primeiro' : 'Reservar vaga'}
               </Button>
             </div>
           </div>

@@ -87,6 +87,24 @@ export function useReservations() {
     if (!user) return null;
 
     try {
+      // Verificar se a vaga já está ocupada
+      const { data: activeReservations, error: checkError } = await supabase
+        .from('reservations')
+        .select('id')
+        .eq('spot_id', spot.id)
+        .eq('status', 'active');
+
+      if (checkError) {
+        console.error('Error checking spot availability:', checkError);
+        toast.error('Erro ao verificar disponibilidade da vaga');
+        return null;
+      }
+
+      if (activeReservations && activeReservations.length > 0) {
+        toast.error('Esta vaga já está ocupada');
+        return null;
+      }
+
       const startTime = new Date();
       const endTime = new Date(startTime.getTime() + durationMinutes * 60 * 1000);
 
@@ -100,7 +118,8 @@ export function useReservations() {
           end_time: endTime.toISOString(),
           price: spot.price,
           duration: durationMinutes,
-          status: 'active'
+          status: 'active',
+          payment_status: 'paid' // Simulação de pagamento processado
         })
         .select(`
           *,

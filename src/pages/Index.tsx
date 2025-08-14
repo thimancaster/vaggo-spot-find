@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Car, MapPin, Clock, Users } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { BottomNavigation } from '../components/BottomNavigation';
+import { AdminNav } from '../components/AdminNav';
 import { HomePage } from './HomePage';
 
 const Index = () => {
@@ -34,6 +35,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#081C2D]">
+      <AdminNav />
       <HomePage onNavigateToVehicles={() => navigate('/vehicles')} />
       <BottomNavigation activeTab={activeTab} onTabChange={handleTabChange} />
     </div>
