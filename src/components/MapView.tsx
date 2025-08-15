@@ -8,6 +8,7 @@ interface ParkingSpot {
   lng: number;
   price: number;
   available: boolean;
+  spot_type: string;
 }
 
 interface MapViewProps {

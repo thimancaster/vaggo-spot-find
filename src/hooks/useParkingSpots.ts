@@ -10,6 +10,7 @@ export interface ParkingSpot {
   lat: number;
   lng: number;
   available: boolean;
+  spot_type: string;
   created_at: string;
   updated_at: string;
 }

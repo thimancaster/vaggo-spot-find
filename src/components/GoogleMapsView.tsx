@@ -13,6 +13,7 @@ interface ParkingSpot {
   lng: number;
   price: number;
   available: boolean;
+  spot_type: string;
 }
 
 interface GoogleMapsViewProps {
@@ -27,6 +28,7 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
   const [apiKey, setApiKey] = useState('');
   const [mapLoaded, setMapLoaded] = useState(false);
   const [markers, setMarkers] = useState<google.maps.Marker[]>([]);
+  const [selectedFilter, setSelectedFilter] = useState<string>('todos');
   const { latitude, longitude, loading: locationLoading } = useGeolocation();
 
   const loadGoogleMaps = async () => {
@@ -102,14 +104,19 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
     }
   }, [mapLoaded, latitude, longitude]);
 
+  // Filtrar vagas baseado no filtro selecionado
+  const filteredSpots = selectedFilter === 'todos' 
+    ? parkingSpots 
+    : parkingSpots.filter(spot => spot.spot_type === selectedFilter);
+
   useEffect(() => {
     if (!map || !parkingSpots.length || !window.google) return;
 
     // Limpar marcadores existentes
     markers.forEach(marker => marker.setMap(null));
 
-    // Criar novos marcadores para as vagas
-    const newMarkers = parkingSpots.map(spot => {
+    // Criar novos marcadores para as vagas filtradas
+    const newMarkers = filteredSpots.map(spot => {
       const marker = new window.google.maps.Marker({
         position: { lat: spot.lat, lng: spot.lng },
         map: map,
@@ -148,7 +155,7 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
     });
 
     setMarkers(newMarkers);
-  }, [map, parkingSpots, onSpotSelect]);
+  }, [map, filteredSpots, onSpotSelect]);
 
   if (!mapLoaded) {
     return (
@@ -187,8 +194,36 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
     );
   }
 
+  const getSpotTypeLabel = (type: string) => {
+    switch (type) {
+      case 'comum': return 'Comum';
+      case 'idoso': return 'Idoso';
+      case 'pcd': return 'PCD';
+      default: return type;
+    }
+  };
+
   return (
     <div className="relative">
+      {/* Filtros */}
+      <div className="mb-4 flex flex-wrap gap-2">
+        {['todos', 'comum', 'idoso', 'pcd'].map((filter) => (
+          <Button
+            key={filter}
+            variant={selectedFilter === filter ? "default" : "outline"}
+            size="sm"
+            onClick={() => setSelectedFilter(filter)}
+            className={`${
+              selectedFilter === filter 
+                ? 'bg-primary text-primary-foreground' 
+                : 'bg-background text-foreground border-border hover:bg-accent'
+            }`}
+          >
+            {filter === 'todos' ? 'Todos' : getSpotTypeLabel(filter)}
+          </Button>
+        ))}
+      </div>
+      
       <div 
         ref={mapRef} 
         className="w-full h-64 bg-gray-800 rounded-xl border border-gray-600"
@@ -200,7 +235,7 @@ export function GoogleMapsView({ parkingSpots, onSpotSelect, selectedSpot }: Goo
         </div>
       )}
       <div className="absolute bottom-4 left-4 bg-gray-800 text-white px-3 py-1 rounded-lg text-sm">
-        {parkingSpots.length} vagas disponíveis
+        {filteredSpots.length} vagas {selectedFilter !== 'todos' ? `(${getSpotTypeLabel(selectedFilter)})` : 'disponíveis'}
       </div>
     </div>
   );

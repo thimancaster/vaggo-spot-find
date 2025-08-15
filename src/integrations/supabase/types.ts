@@ -23,6 +23,7 @@ export type Database = {
           lng: number
           name: string
           price: number
+          spot_type: string
           updated_at: string
         }
         Insert: {
@@ -33,6 +34,7 @@ export type Database = {
           lng: number
           name: string
           price: number
+          spot_type?: string
           updated_at?: string
         }
         Update: {
@@ -43,6 +45,7 @@ export type Database = {
           lng?: number
           name?: string
           price?: number
+          spot_type?: string
           updated_at?: string
         }
         Relationships: []
