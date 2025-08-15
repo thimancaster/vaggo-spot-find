@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Car } from 'lucide-react';
+import { Car, Wallet, CreditCard } from 'lucide-react';
 import { MapView } from '../components/MapView';
 import { ActiveReservation } from '../components/ActiveReservation';
 import { LocationSearch } from '../components/LocationSearch';
@@ -8,6 +8,7 @@ import { LoadingSpinner } from '../components/LoadingSpinner';
 import { useParkingSpots } from '../hooks/useParkingSpots';
 import { useVehicles } from '../hooks/useVehicles';
 import { useReservations } from '../hooks/useReservations';
+import { useWallet } from '../hooks/useWallet';
 import { Button } from '../components/ui/button';
 import { useToast } from '../hooks/use-toast';
 import { BgRemovedImage } from '../components/BgRemovedImage';
@@ -20,11 +21,13 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
   const [selectedSpot, setSelectedSpot] = useState<any>(null);
   const [searchLocation, setSearchLocation] = useState<{address: string; lat: number; lng: number} | null>(null);
   const [reservationLoading, setReservationLoading] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<'stripe' | 'wallet'>('stripe');
   const { toast } = useToast();
   
   const { parkingSpots, loading: spotsLoading } = useParkingSpots();
   const { vehicles, loading: vehiclesLoading } = useVehicles();
   const { currentReservation, makeReservation, endReservation } = useReservations();
+  const { wallet, payWithWallet } = useWallet();
 
   const handleLocationSelect = (location: { address: string; lat: number; lng: number }) => {
     setSearchLocation(location);
@@ -64,14 +67,32 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
 
     setReservationLoading(true);
     try {
-      // Use the first vehicle for demo purposes
-      const reservation = await makeReservation(selectedSpot, vehicles[0].id);
-      if (reservation) {
-        setSelectedSpot(null); // Clear selection after successful reservation
-        toast({
-          title: "Reserva confirmada!",
-          description: `Vaga reservada em ${selectedSpot.name}`,
-        });
+      if (paymentMethod === 'wallet') {
+        // Pay with wallet balance
+        const result = await payWithWallet(
+          selectedSpot.id,
+          vehicles[0].id,
+          1, // 1 hour duration
+          selectedSpot.price
+        );
+        
+        if (result) {
+          setSelectedSpot(null);
+          toast({
+            title: "Reserva confirmada!",
+            description: `Vaga reservada em ${selectedSpot.name} usando saldo da carteira`,
+          });
+        }
+      } else {
+        // Pay with Stripe
+        const reservation = await makeReservation(selectedSpot, vehicles[0].id);
+        if (reservation) {
+          setSelectedSpot(null);
+          toast({
+            title: "Reserva confirmada!",
+            description: `Vaga reservada em ${selectedSpot.name}`,
+          });
+        }
       }
     } finally {
       setReservationLoading(false);
@@ -168,12 +189,46 @@ export function HomePage({ onNavigateToVehicles }: HomePageProps) {
                 </div>
               </div>
               
+              {/* Payment Method Selection */}
+              <div className="mb-4">
+                <p className="text-gray-300 text-sm mb-3">Escolha a forma de pagamento:</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    variant={paymentMethod === 'stripe' ? 'default' : 'outline'}
+                    onClick={() => setPaymentMethod('stripe')}
+                    className="flex flex-col items-center p-3 h-auto"
+                  >
+                    <CreditCard className="h-4 w-4 mb-1" />
+                    <span className="text-xs">Cartão</span>
+                  </Button>
+                  <Button
+                    variant={paymentMethod === 'wallet' ? 'default' : 'outline'}
+                    onClick={() => setPaymentMethod('wallet')}
+                    disabled={!wallet || wallet.balance < selectedSpot.price}
+                    className="flex flex-col items-center p-3 h-auto"
+                  >
+                    <Wallet className="h-4 w-4 mb-1" />
+                    <span className="text-xs">
+                      Carteira (R$ {wallet?.balance?.toFixed(2) || '0,00'})
+                    </span>
+                  </Button>
+                </div>
+                {paymentMethod === 'wallet' && wallet && wallet.balance < selectedSpot.price && (
+                  <p className="text-red-400 text-xs mt-2">
+                    Saldo insuficiente. Adicione créditos na sua carteira.
+                  </p>
+                )}
+              </div>
+              
               <Button 
                 onClick={handleReservation}
-                disabled={vehicles.length === 0 || reservationLoading}
+                disabled={vehicles.length === 0 || reservationLoading || (paymentMethod === 'wallet' && (!wallet || wallet.balance < selectedSpot.price))}
                 className="w-full bg-gradient-to-r from-[#7CFC00] to-lime-400 text-[#081C2D] font-bold text-lg h-12 rounded-xl transition-transform duration-200 hover:scale-105"
               >
-                {reservationLoading ? 'Reservando...' : vehicles.length === 0 ? 'Adicione um veículo primeiro' : 'Reservar vaga'}
+                {reservationLoading ? 'Reservando...' : 
+                 vehicles.length === 0 ? 'Adicione um veículo primeiro' : 
+                 paymentMethod === 'wallet' ? `Pagar com Carteira (R$ ${selectedSpot.price.toFixed(2)})` :
+                 'Reservar com Cartão'}
               </Button>
             </div>
           </div>

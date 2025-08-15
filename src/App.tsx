@@ -13,6 +13,7 @@ import { PlansPage } from './pages/PlansPage';
 import { SupportPage } from './pages/SupportPage';
 import { AdminPage } from './pages/AdminPage';
 import { FiscalPage } from './pages/FiscalPage';
+import WalletPage from './pages/WalletPage';
 import NotFound from './pages/NotFound';
 import './App.css';
 
@@ -135,6 +136,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <HistoryPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/wallet" 
+        element={
+          <ProtectedRoute>
+            <WalletPage />
           </ProtectedRoute>
         } 
       />

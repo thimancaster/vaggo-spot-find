@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { User, History, MessageCircle } from 'lucide-react';
+import { User, History, MessageCircle, Wallet } from 'lucide-react';
 
 interface BottomNavigationProps {
   activeTab: string;
@@ -10,6 +10,7 @@ interface BottomNavigationProps {
 export function BottomNavigation({ activeTab, onTabChange }: BottomNavigationProps) {
   const tabs = [
     { id: 'home', icon: '🏠', label: 'Home' },
+    { id: 'wallet', icon: Wallet, label: 'Carteira' },
     { id: 'history', icon: History, label: 'Histórico' },
     { id: 'support', icon: MessageCircle, label: 'Suporte' },
     { id: 'account', icon: User, label: 'Conta' },

@@ -19,6 +19,9 @@ const Index = () => {
       case 'home':
         navigate('/');
         break;
+      case 'wallet':
+        navigate('/wallet');
+        break;
       case 'history':
         navigate('/history');
         break;
